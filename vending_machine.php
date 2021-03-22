@@ -68,6 +68,11 @@
                     session_destroy();
                     
                 }
+                else if($remaining_price < 0){
+                    echo"get your change of  $".number_format(abs($remaining_price),2);
+                    echo "<p> Enjoy your ".$_SESSION["item_name"];
+                    session_destroy();
+                }
                 else{
                     $_SESSION["remainig_price"] = $remaining_price;
                     echo "<p>You have to pay ".$_SESSION["remainig_price"]."</p>";
@@ -78,8 +83,6 @@
             
         }
     }
-    
-    
 ?>
 
 
