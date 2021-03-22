@@ -34,33 +34,46 @@
                     $item = new Item($selected_item, $selected_item_price);
                     $_SESSION["item_name"] = $item->get_itemName();
                     $_SESSION["item_price"] = $item->get_itemPrice();
+                    $_SESSION["remainig_price"] = $_SESSION["item_price"];
                     }    
-            }
-            
-        // echo $item->get_itemPrice();
-           
+            }           
        
         if(isset($_SESSION["item_name"])){
             //echo "Selected item is ".$item->get_itemName();
             // $remaining_price = 0;
+            $selected_amount = 0;
             if(isset($_POST['1'])){
-                $selected_amount = 1;
+                $selected_amount = 1.00;
             }
             if(isset($_POST['25'])){
                 $selected_amount = 0.25;
             }
             if(isset($_POST['10'])){
-                $selected_amount = 0.10;
+                $selected_amount = 0.1;
                 
             }
             if(isset($_POST['05'])){
-                $selected_amount = 0.05;
-                
+                $selected_amount = 0.05;                
             }
-            if(isset($selected_amount)){
-                echo $selected_amount."<br>";
-                $remaining_price = $_SESSION["item_price"] - $selected_amount;
-                echo $remaining_price;
+            
+            $remaining_price = $_SESSION["remainig_price"] - $selected_amount;
+            if(isset($selected_amount) && isset($_SESSION["remainig_price"])){
+                //echo $selected_amount."<br>";                
+                
+                if($remaining_price == 0){
+                    echo "<p> Enjoy your ".$_SESSION["item_name"];
+                    // unset($_SESSION["item_name"]);
+                    // $_SESSION["item_price"]= "";
+                    // $_SESSION["remainig_price"] = ""
+                    session_destroy();
+                    
+                }
+                else{
+                    $_SESSION["remainig_price"] = $remaining_price;
+                    echo "<p>You have to pay ".$_SESSION["remainig_price"]."</p>";
+                }
+                    
+                
             }
             
         }
@@ -93,16 +106,13 @@
     <button name="pop">Pop $1.50</button>
     <button name="chips">Chips $1.75</button>
     <p>Payment</p>
-    <?php
-        if(isset($_SESSION["item_name"])){
-            echo '
+    
             <button name="1">$1</button>
             <button name="25">$0.25</button>
             <button name="10">$0.10</button>
             <button name="05">$0.05</button>
-            ';
-        }
-    ?>
+            
+       
     
  </form>
  
