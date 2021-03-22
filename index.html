@@ -4,20 +4,34 @@
  <body>
  <div id="display">
  </div>
- <p><input id="message" type="text" name="message"></p>
- <p><input id="username" type="text" name="username"></p>
+ <p>Username<input id="username" type="text" name="username"></p>
+ <p>Message<input id="message" type="text" name="message"></p>
  <p>
  <button type="button" onclick="postdata()">Submit Message</button>
  </p>
  </body>
 <script>  
 function getmessage() {
+    fetch('messages.php', {
+        method: 'GET'
+    })
+    .then(response => response.text())
+    .then(response => document.getElementById("display").innerHTML = response);
 
 }
 
 function postdata() {
-
+    var formdata = new FormData();
+    formdata.append("username", document.getElementById("username").value);
+    formdata.append("message", document.getElementById("message").value);
+    fetch('input.php', {
+        method: 'POST',
+        body: formdata
+    })
+    .then(response => response.text())
+    .then(response => document.getElementById("display").innerHTML = response);
 }
-getmessage();
+
+setInterval(getmessage, 1000);
  </script>
  </html>
